@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyUtilsApp.InfoPage">
+
+    <ContentPage.BackgroundColor>
+        <!--Property element Syntax : Notum element en ekki attribute-->
+        <!--0,20,0,0-->
+        <OnPlatform x:TypeArguments="Color" WinPhone="Purple"
+            iOS="Green" Android="Aqua">
+        </OnPlatform>
+    </ContentPage.BackgroundColor>
+
+
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="20" Margin="20,0,20,0">
+        <Entry Placeholder="Nafn" Text="{Binding NameInput,Mode=TwoWay}" ></Entry>
+        <Entry Placeholder="Netfang" Text="{Binding EmailInput,Mode=TwoWay}" Keyboard="Email"></Entry>
+        <Entry Placeholder="Símanúmer" Text="{Binding PhoneNumberInput,Mode=TwoWay}" Keyboard="Numeric"></Entry>
+        <Label Text="{Binding Name}"></Label>
+        <Label Text="{Binding Email}"></Label>
+        <Label Text="{Binding PhoneNumber}"></Label>
+        <Button Text="Submit" Command="{Binding SubmitCommand}"></Button>
+        <Button Text="Clear" Command="{Binding ClearCommand}"></Button>
+    </StackLayout>
+
+</ContentPage>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyUtilsApp.HeatPage">
+    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Spacing="10" Margin="20">
+        <Label Text="Reikna:" HorizontalOptions="Center"/>
+        <Label Text="{Binding HeatType}" HorizontalOptions="Center"/>
+        <Switch HorizontalOptions="Center" IsToggled="{Binding IsCalculatingFarenheit}"/>
+        <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding HeatInput, Mode=TwoWay}"/>
+        <Button WidthRequest="100" Text="Reikna" Command="{Binding CalculateHeatCommand}" />
+        <Label HorizontalOptions="Center" FontSize="Large" Text="{Binding HeatCalculated}"/>
+    </StackLayout>
+</ContentPage>
