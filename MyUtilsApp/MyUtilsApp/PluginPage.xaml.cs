@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MyUtilsApp.ViewModel;
+using Plugin.Battery;
+using Plugin.Connectivity;
+using Plugin.Geolocator;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,59 +15,52 @@ namespace MyUtilsApp
         {
             InitializeComponent();
 
-            var button = new Button
+            LblBattery.Text = "Level: " + CrossBattery.Current.RemainingChargePercent + "%";
+
+            CrossConnectivity.Current.ConnectivityChanged += Current_ConnectivityChanged;
+
+            GetGPS();
+
+
+            MessagingCenter.Subscribe<HeatViewModel, string>(this, "HeatCalculated", CalcHeatResult );
+
+        }
+
+        private void CalcHeatResult(HeatViewModel arg1, string arg)
+        {
+            LblHeat.Text = arg;
+        }
+
+        private void ReceiveMessage(HeatViewModel sender, string message)
+        {
+            LblMessage.Text = message;
+        }
+
+        private void Current_ConnectivityChanged(object sender, Plugin.Connectivity.Abstractions.ConnectivityChangedEventArgs e)
+        {
+            App.Current.MainPage.DisplayAlert("ATH", "Netamband breyttist", "OK");
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (!CrossConnectivity.Current.IsConnected)
             {
-                Text = "Click for battery info",
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-            };
+                App.Current.MainPage.DisplayAlert("ATH", "Ekkert netsamband", "OK");
+            }
+        }
 
-            button.Clicked += (sender, e) => {
+        public async void GetGPS()
+        {
+            var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 50;
 
-                var bat = DependencyService.Get<IBattery>();
+            var position = await locator.GetPositionAsync(10000);
 
-                switch (bat.PowerSource)
-                {
-                    case PowerSource.Battery:
-                        button.Text = "Battery - ";
-                        break;
-                    case PowerSource.Ac:
-                        button.Text = "AC - ";
-                        break;
-                    case PowerSource.Usb:
-                        button.Text = "USB - ";
-                        break;
-                    case PowerSource.Wireless:
-                        button.Text = "Wireless - ";
-                        break;
-                    case PowerSource.Other:
-                    default:
-                        button.Text = "Other - ";
-                        break;
-                }
-                switch (bat.Status)
-                {
-                    case BatteryStatus.Charging:
-                        button.Text += "Charging";
-                        break;
-                    case BatteryStatus.Discharging:
-                        button.Text += "Discharging";
-                        break;
-                    case BatteryStatus.NotCharging:
-                        button.Text += "Not Charging";
-                        break;
-                    case BatteryStatus.Full:
-                        button.Text += "Full";
-                        break;
-                    case BatteryStatus.Unknown:
-                    default:
-                        button.Text += "Unknown";
-                        break;
-                }
-            };
-
-            Content = button;
-
+            LblGPSStatus.Text = $"Position status : {position.Timestamp}";
+            LblGPSLatitude.Text = $"Position Latitude : {position.Latitude}";
+            LblGPSLongitude.Text = $"Position Longitude: { position.Longitude}";
         }
     }
 }

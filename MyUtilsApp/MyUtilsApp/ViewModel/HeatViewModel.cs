@@ -26,6 +26,7 @@ namespace MyUtilsApp.ViewModel
                 try
                 {
                     HeatCalculated = Helpers.CalculateHeat(HeatInput, heatTypeResult);
+                    MessagingCenter.Send<HeatViewModel, string>(this, "HeatCalculated", HeatCalculated);
                 }
                 catch (Exception ex)
                 {

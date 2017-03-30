@@ -5,10 +5,10 @@
              xmlns:pages="clr-namespace:MyUtilsApp;assembly=MyUtilsApp"
              Title="TabbedPage">
     <!--Pages can be added as references or inline-->
+    <pages:PluginPage Title="Plugin"/>
     <pages:InfoPage Title="Info"/>
     <pages:WeightPage Title="Weight"/>
     <pages:HeatPage Title="Heat"/>
     <pages:CalculatorPage Title="Calc"/>
     <pages:SMSPage Title="SMS"/>
-    <pages:PluginPage Title="Plugin"/>
 </TabbedPage>
